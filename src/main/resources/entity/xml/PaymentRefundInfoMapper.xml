@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mjs.study.entity.mapper.PaymentRefundInfoMapper" >
+    <resultMap id="paymentRefundMap" type="com.mjs.study.entity.pojo.PaymentRefundInfo">
+        <id column="PId" property="id" jdbcType="INTEGER" />
+        <result column="AcceptId" property="acceptid" jdbcType="VARCHAR" />
+        <result column="TransNo" property="transno" jdbcType="VARCHAR" />
+        <result column="PStatus" property="status" jdbcType="INTEGER" />
+        <result column="PCreatTime" property="creattime" jdbcType="VARCHAR" />
+        <result column="PExtend" property="extend" jdbcType="VARCHAR" />
+        <collection property="lists" ofType="com.mjs.study.entity.pojo.RefundInfo">
+            <id column="RID" property="id" jdbcType="INTEGER" />
+            <result column="TransNo" property="transno" jdbcType="VARCHAR" />
+            <result column="Amt" property="amt" jdbcType="DECIMAL" />
+            <result column="RStatus" property="status" jdbcType="INTEGER" />
+            <result column="RCreatTime" property="creattime" jdbcType="VARCHAR" />
+            <result column="RExtend" property="extend" jdbcType="VARCHAR" />
+        </collection>
+    </resultMap>
+    <select id="findPaymentRefundList" resultMap="paymentRefundMap">
+        select distinct
+        p.id as PId,
+        p.AcceptId,
+        p.TransNo,
+        p.status AS PStatus,
+        p.creatTime AS PCreatTime,
+        p.extend AS PExtend,
+        r.id AS RID,
+        r.Amt,
+        r.status AS RStatus,
+        r.creatTime AS RCreatTime,
+        r.extend AS RExtend
+        from
+        Payment_Info p, Refund_Info r
+        where p.TransNo=r.TransNo
+    </select>
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <!-- 扫描到有@Component @Controller@Service等这些注解的类 ,则把这些类注册为bean -->
+    <!-- spring不要扫MVC的controller,否则引起事务失效 -->
+    <context:component-scan base-package="com">
+        <context:exclude-filter type="annotation"
+                                expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+    <context:property-placeholder location="classpath:db.properties"  />
+    <!-- 数据库连接池 :dataSource -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+          destroy-method="close">
+        <property name="driverClass" value="${driverClass}" />
+        <property name="jdbcUrl"
+                  value="${jdbcUrl}" />
+        <property name="user" value="${user}" />
+        <property name="password" value="${password}" />
+        <property name="minPoolSize" value="5" />
+        <property name="maxPoolSize" value="100" />
+        <property name="maxIdleTime" value="60" />
+        <property name="acquireIncrement" value="3" />
+        <property name="maxStatements" value="100" />
+        <property name="initialPoolSize" value="3" />
+        <property name="idleConnectionTestPeriod" value="60" />
+        <property name="acquireRetryAttempts" value="30" />
+        <property name="breakAfterAcquireFailure" value="true" />
+        <property name="testConnectionOnCheckout" value="false" />
+    </bean>
+</beans>
